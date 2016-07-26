@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+    <title></title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding:0;
+        }
+        .box{
+            width: 350px;
+            height: 70px;
+            border: 1px solid black;
+            margin: 200px auto;
+            position: relative;
+            overflow: hidden;
+        }
+        #box1{
+            width: 700px;
+            height: 50px;
+            /*margin: auto 0px;*/
+            background: blue;
+            list-style: none;
+            left:0;
+            top: 10px;
+            position: absolute;
+            /*transition: all 0.5s;*/
+        }
+        #box1 li{
+            float: left;
+            margin: 0 17px;
+            text-align: center;
+            line-height: 50px;
+            color: white;
+            font-size: 16px;
+
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <ul id="box1">
+        <li>首页</li>
+        <li>新闻</li>
+        <li>导航</li>
+        <li>科技</li>
+        <li>社会</li>
+        <li>互联网</li>
+        <li>家庭</li>
+        <li>文艺</li>
+        <li>视频</li>
+        <li>直播</li>
+    </ul>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    var obox=document.getElementsByClassName("box")[0];
+    var obox1=document.getElementById("box1");
+    var xstart;
+    var x=0;
+    var max=100;
+    obox1.addEventListener("touchstart",touchstart);
+    obox1.addEventListener("touchmove",touchmove);
+    obox1.addEventListener("touchend",touchend);
+    function touchstart(e){
+        var touch=e.touches[0];
+        xstart=touch.clientX;
+    }
+
+    function touchmove(e){
+        e.preventDefault();
+        var touch=e.touches[0];
+        obox1.style.left=x+touch.pageX-xstart+"px";
+        console.log(obox1.style.left)
+    }
+    function touchend(){
+
+        if (parseInt(obox1.style.left)>0) {
+            obox1.style.left=0+"px";
+        }
+        if (Math.abs(parseInt(obox1.style.left))>350) {
+            obox1.style.left=-350+"px";
+        }
+        x=parseInt(obox1.style.left)
+    }
+</script>
