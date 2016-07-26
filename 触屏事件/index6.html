@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>上下左右滑动</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <style>
+        .text{
+            width: 200px;height: 200px;
+            background-color: aqua;
+
+        }
+    </style>
+</head>
+<body>
+<div class="show"></div>
+<div class="text"></div>
+
+
+<script>
+    var show = document.getElementsByClassName("show")[0];
+    var text = document.getElementsByClassName("text")[0];
+    var startPoint,endPoint;
+    function getPoint(e){
+        var touches = e.touches;
+        //获取触摸点
+        return {
+            x:touches[0].clientX,
+            y:touches[0].clientY
+        }
+    }
+    //得到两点之间的距离
+    function getDistance(p1,p2) {
+        //开平方根(通过勾股定理)
+        return Math.sqrt((p1.x-p2.x)*(p1.x - p2.x) + (p1.y - p2.y)*(p1.y - p2.y));
+
+    }
+
+    //获得方向
+    function getDirection(p1,p2) {
+        //对应获得两点的位置坐标差值,从而求得弧度数
+        var dx = p2.x - p1.x;
+        var dy = p2.y - p1.y;
+        //弧度和角度的转换公式
+        //弧度 = 角度*Math.PI/180
+        //角度 = 弧度*180/Math.PI
+        //弧度构成坐标;x轴方向,顺时针为正逆时针为负;这个角度在x轴正方向的值为0
+        var angle = Math.atan2(dy,dx) * 180 / Math.PI;
+        //对角度进行判定,并设置相对应的朝向问题;从而在空白盒子当中,根据触摸两点构成的角度数,从而相对应来显示出来设定的朝向问题
+        if(angle<45&&angle>-45) return "right";
+        if(angle>=45&&angle<135) return "bottom";
+        if(angle>=135||angle<-135) return "left";
+        if(angle>=-135&&angle<=-45) return "top"
+    }
+    //监听触摸事件
+    text.addEventListener("touchstart",function (e) {
+        startPoint = getPoint(e);
+        //console.log(startPoint);
+    });
+    //touchmove事件
+    text.addEventListener("touchmove",function (e) {
+        endPoint = getPoint(e);
+    });
+    text.addEventListener("touchend",function () {
+        if(getDistance(startPoint,endPoint)>30) {
+            show.innerHTML = getDirection(startPoint,endPoint);
+        }
+    })
+</script>
+</body>
+</html>

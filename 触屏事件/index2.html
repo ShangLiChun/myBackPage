@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>Title</title>
+
+    <style>
+        *{
+            padding: 0;margin: 0;
+        }
+        body{
+            width:1366px;height: 400px;
+        }
+        #box{
+            width: 100%;height: 100%;
+            position: relative;
+        }
+        #move{
+            width: 80%;height: 80%;
+            margin: 20% auto;
+            background-color: aqua;
+            position: absolute;
+            top:0;
+        }
+
+        .spirit{
+            width: 6%;height: 6%;
+            background-color: green;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    <div id="move"></div>
+</div>
+
+<script>
+    var box = document.getElementById("box");
+    var move = document.getElementById('move');
+
+    move.addEventListener("touchstart",touchStart);
+    move.addEventListener("touchmove",touchMove);
+    move.addEventListener("touchend",touchEnd);
+
+    var startX,startY;
+    var x,y;
+    var topY = 0,leftX = 0;
+    var a = 1;
+    var div;
+    function touchStart(e) {
+        e.preventDefault();
+        var touch = e.touches[0];
+        //获取当前触摸点的位置
+        startX = touch.pageX;
+        startY = touch.pageY;
+         div = document.createElement("div");
+        div.className = "spirit";
+        div.style.left = startX + "px";
+        div.style.top = startY + "px";
+        div.innerHTML = a++;
+        move.appendChild(div);
+    }
+    function touchMove(e) {
+        e.preventDefault();
+        var touch = e.touches[0];
+        var moveX = move.style.left;
+        var moveY = move.style.top;
+        if(parseInt(touch.pageX)>0&&parseInt(touch.pageY)>0) {
+            if(parseInt(touch.pageX)<moveX&&parseInt(touch.pageY)<moveY) {
+                x = touch.pageX - startX;
+                y = touch.pageY - startY;//此时获得上下移动的高度值
+                //第一种
+                /*div.style.top = startY + y + "px";
+                div.style.left = startX + x + "px";*/
+                //第二种
+                div.style.transform = "translate("+x+"px,"+y+"px)"
+            }
+        }
+    }
+    function touchEnd(e) {
+        e.preventDefault();
+        div.remove();
+    }
+
+
+
+</script>
+</body>
+</html>

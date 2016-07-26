@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>Title</title>
+    <style>
+        #outer{
+            width: 90%;height: 500px;
+            background-color: black;
+            overflow: hidden;
+        }
+        #inner{
+            width: 80%;height: 800px;
+            background-color: red;
+            margin: 0 auto;
+            position: relative;
+            top:0;
+        }
+    </style>
+</head>
+<body>
+
+<div id="outer">
+    <div id="inner">
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+            <li>9</li>
+            <li>10</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    var outer = document.getElementById("outer");
+    var inner = document.getElementById("inner");
+
+    outer.addEventListener("touchstart",touchStart);
+    outer.addEventListener("touchmove",touchMove);
+    outer.addEventListener("touchend",touchEnd);
+
+    //全局变量
+    var startY,//记录初始点的Y坐标
+            y,//全局设置移动点位置的高度
+            topY=0;//初始时inner距离顶部的值
+
+    function touchStart(e) {
+        e.preventDefault();
+        console.log("touchstart");
+        var touch = e.touches[0];
+        startY = touch.pageY
+    }
+
+    function touchMove(e) {
+        e.preventDefault();
+        console.log("touchmove");
+        //获取当前的提一个 触摸点
+        var touch = e.touches[0];
+        y = touch.pageY - startY;//此时获得上下移动的高度值
+        inner.style.top = topY + y + "px";
+    }
+
+    function touchEnd(e) {
+        //e.preventDefault();
+        console.log("touchend");
+        if(parseInt(inner.style.top)<0){
+            topY = parseInt(inner.style.top);  //触摸结束,inner盒子能够定位到触摸点的位置
+        }else if(parseInt(inner.style.top>=0)){
+            inner.style.top = 0;
+        }
+    }
+</script>
+
+</body>
+</html>
